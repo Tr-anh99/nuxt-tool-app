@@ -87,7 +87,17 @@ function coerceStatic(value: string, type: SqlStaticType): unknown {
   }
 }
 
-export function buildSqlInsertMany(jsonString: string, table: string, mappings: SqlFieldMapping[]): string {
+export interface SqlInsertOptions {
+  batchSize?: number
+}
+
+export function buildSqlInsertMany(
+  jsonString: string,
+  table: string,
+  mappings: SqlFieldMapping[],
+  options: SqlInsertOptions = {}
+): string {
+  const { batchSize = 0 } = options
   const data = JSON.parse(jsonString) as unknown
 
   if (!Array.isArray(data)) {
@@ -136,7 +146,18 @@ export function buildSqlInsertMany(jsonString: string, table: string, mappings: 
 
   const tableName = formatIdentifier(table.trim() || 'table_name')
   const columns = effectiveMappings.map(m => formatIdentifier(m.key)).join(', ')
-  const body = rows.map(row => `(${row.join(', ')})`).join(',\n')
 
-  return `INSERT INTO ${tableName} (${columns}) VALUES\n${body};`
+  if (batchSize <= 0) {
+    const body = rows.map(row => `(${row.join(', ')})`).join(',\n')
+    return `INSERT INTO ${tableName} (${columns}) VALUES\n${body};`
+  }
+
+  const batches: string[] = []
+  for (let i = 0; i < rows.length; i += batchSize) {
+    const batch = rows.slice(i, i + batchSize)
+    const body = batch.map(row => `(${row.join(', ')})`).join(',\n')
+    batches.push(`INSERT INTO ${tableName} (${columns}) VALUES\n${body};`)
+  }
+
+  return batches.join('\n\n')
 }

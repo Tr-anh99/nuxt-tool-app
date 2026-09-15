@@ -15,6 +15,7 @@ const { copyText } = useCopyToClipboard()
 const table = ref('table_name')
 const input = ref('')
 const mappings = ref<SqlFieldMapping[]>([])
+const batchSize = ref(0)
 const output = ref('')
 const error = ref('')
 
@@ -70,13 +71,13 @@ function parse() {
   }
 
   try {
-    output.value = buildSqlInsertMany(input.value, table.value, mappings.value)
+    output.value = buildSqlInsertMany(input.value, table.value, mappings.value, { batchSize: batchSize.value })
   } catch (e) {
     error.value = e instanceof Error ? e.message : String(e)
   }
 }
 
-watch([input, table, mappings], parse, { deep: true })
+watch([input, table, mappings, batchSize], parse, { deep: true })
 </script>
 
 <template>
@@ -95,6 +96,19 @@ watch([input, table, mappings], parse, { deep: true })
             <UInput
               v-model="table"
               placeholder="package_values"
+              class="w-full"
+            />
+          </UFormField>
+
+          <UFormField label="Kích thước batch (số record/lệnh)">
+            <template #hint>
+              <span class="text-xs text-muted">Để trống hoặc 0 = không chia batch (tất cả records trong 1 lệnh)</span>
+            </template>
+            <UInput
+              v-model.number="batchSize"
+              type="number"
+              placeholder="0"
+              min="0"
               class="w-full"
             />
           </UFormField>

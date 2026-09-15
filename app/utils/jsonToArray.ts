@@ -27,7 +27,17 @@ function sortAsc(values: unknown[]): unknown[] {
   })
 }
 
-export function jsonToArray(jsonString: string, attributeInput: string): unknown[] {
+interface JsonToArrayOptions {
+  sort?: boolean
+  distinct?: boolean
+}
+
+export function jsonToArray(
+  jsonString: string,
+  attributeInput: string,
+  options: JsonToArrayOptions = {}
+): unknown[] {
+  const { sort = false, distinct = true } = options
   const keys = attributeInput.split(',').map(a => a.trim()).filter(Boolean)
   if (keys.length === 0) {
     throw new Error('Vui lòng nhập tên attribute.')
@@ -41,8 +51,14 @@ export function jsonToArray(jsonString: string, attributeInput: string): unknown
 
   if (keys.length === 1) {
     const key = keys[0] as string
-    const values = data.map(item => pickValue(item, key))
-    return sortAsc(distinctValues(values))
+    let values = data.map(item => pickValue(item, key))
+    if (distinct) {
+      values = distinctValues(values)
+    }
+    if (sort) {
+      values = sortAsc(values)
+    }
+    return values
   }
 
   return data.map((item) => {

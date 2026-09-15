@@ -10,6 +10,8 @@ useSeoMeta({
 
 const input = ref('')
 const attribute = ref('')
+const sort = ref(false)
+const distinct = ref(true)
 const output = ref('')
 const error = ref('')
 
@@ -22,13 +24,17 @@ function parse() {
   }
 
   try {
-    output.value = JSON.stringify(jsonToArray(input.value, attribute.value), null, 2)
+    output.value = JSON.stringify(
+      jsonToArray(input.value, attribute.value, { sort: sort.value, distinct: distinct.value }),
+      null,
+      2
+    )
   } catch (e) {
     error.value = e instanceof Error ? e.message : String(e)
   }
 }
 
-watch([input, attribute], parse)
+watch([input, attribute, sort, distinct], parse)
 </script>
 
 <template>
@@ -53,6 +59,17 @@ watch([input, attribute], parse)
               class="w-full"
             />
           </UFormField>
+
+          <div class="flex flex-col gap-3">
+            <div class="flex items-center gap-2">
+              <UCheckbox v-model="distinct" />
+              <label class="text-sm">Loại bỏ duplicates (chỉ áp dụng khi 1 attribute)</label>
+            </div>
+            <div class="flex items-center gap-2">
+              <UCheckbox v-model="sort" />
+              <label class="text-sm">Sắp xếp kết quả (chỉ áp dụng khi 1 attribute)</label>
+            </div>
+          </div>
 
           <UFormField
             label="JSON đầu vào (mảng object)"
