@@ -6,6 +6,8 @@
     "build": "nuxt build",
     "dev": "nuxt dev",
     "preview": "nuxt preview",
+    "generate": "nuxt generate",
+    "deploy": "nuxt generate && wrangler pages deploy dist",
     "postinstall": "nuxt prepare",
     "lint": "eslint .",
     "typecheck": "nuxt typecheck"
@@ -13,7 +15,7 @@
   "dependencies": {
     "@iconify-json/lucide": "^1.2.117",
     "@iconify-json/simple-icons": "^1.2.90",
-    "@nuxt/ui": "^4.10.0",
+    "@nuxt/ui": "^4.13.0",
     "@vueuse/core": "^14.3.0",
     "dayjs": "^1.11.21",
     "dayjs-nuxt": "2.1.11",
