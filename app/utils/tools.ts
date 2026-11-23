@@ -73,6 +73,14 @@ export const tools: ToolDefinition[] = [
     group: 'Chuyển đổi'
   },
   {
+    id: 'unicode-unescape',
+    label: 'Unicode → Tiếng Việt',
+    description: 'Chuyển chuỗi escape Unicode (d\u1ea1ng backslash + uXXXX) sang văn bản tiếng Việt.',
+    icon: 'i-lucide-languages',
+    to: '/unicode-unescape',
+    group: 'Chuyển đổi'
+  },
+  {
     id: 'json-to-mongo-insert',
     label: 'JSON → Mongo insertMany',
     description: 'Sinh câu lệnh db.collection.insertMany() từ mảng JSON, tuỳ chỉnh field bằng attribute hoặc template chuỗi.',
