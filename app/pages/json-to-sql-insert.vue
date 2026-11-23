@@ -86,7 +86,11 @@ watch([input, table, mappings, batchSize], parse, { deep: true })
       <UDashboardNavbar
         title="JSON → SQL Insert"
         icon="i-lucide-table-2"
-      />
+      >
+        <template #leading>
+          <UDashboardSidebarCollapse />
+        </template>
+      </UDashboardNavbar>
     </template>
 
     <template #body>

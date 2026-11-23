@@ -25,7 +25,11 @@ const output = computed(() => {
       <UDashboardNavbar
         title="Env → JSON"
         icon="i-lucide-file-json-2"
-      />
+      >
+        <template #leading>
+          <UDashboardSidebarCollapse />
+        </template>
+      </UDashboardNavbar>
     </template>
 
     <template #body>

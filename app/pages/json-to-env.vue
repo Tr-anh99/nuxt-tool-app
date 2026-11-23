@@ -37,7 +37,11 @@ watch(input, (value) => {
       <UDashboardNavbar
         title="JSON → Env"
         icon="i-lucide-file-cog"
-      />
+      >
+        <template #leading>
+          <UDashboardSidebarCollapse />
+        </template>
+      </UDashboardNavbar>
     </template>
 
     <template #body>

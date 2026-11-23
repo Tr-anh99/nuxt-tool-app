@@ -40,7 +40,11 @@ watch([fieldName, startDate, endDate, interval], () => {
       <UDashboardNavbar
         title="Tạo Partition"
         icon="i-lucide-table-properties"
-      />
+      >
+        <template #leading>
+          <UDashboardSidebarCollapse />
+        </template>
+      </UDashboardNavbar>
     </template>
 
     <template #body>

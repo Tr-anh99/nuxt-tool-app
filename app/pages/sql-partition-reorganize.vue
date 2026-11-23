@@ -46,7 +46,11 @@ watch(ddl, parse)
       <UDashboardNavbar
         title="Reorganize Partition"
         icon="i-lucide-database-zap"
-      />
+      >
+        <template #leading>
+          <UDashboardSidebarCollapse />
+        </template>
+      </UDashboardNavbar>
     </template>
 
     <template #body>

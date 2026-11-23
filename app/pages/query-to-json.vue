@@ -35,7 +35,11 @@ watch(input, (value) => {
       <UDashboardNavbar
         title="Query String → JSON"
         icon="i-lucide-link-2"
-      />
+      >
+        <template #leading>
+          <UDashboardSidebarCollapse />
+        </template>
+      </UDashboardNavbar>
     </template>
 
     <template #body>

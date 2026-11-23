@@ -43,7 +43,11 @@ watch([input, attribute, sort, distinct], parse)
       <UDashboardNavbar
         title="JSON → Array"
         icon="i-lucide-list"
-      />
+      >
+        <template #leading>
+          <UDashboardSidebarCollapse />
+        </template>
+      </UDashboardNavbar>
     </template>
 
     <template #body>

@@ -85,7 +85,11 @@ watch([input, collection, mappings], parse, { deep: true })
       <UDashboardNavbar
         title="JSON → Mongo insertMany"
         icon="i-lucide-database"
-      />
+      >
+        <template #leading>
+          <UDashboardSidebarCollapse />
+        </template>
+      </UDashboardNavbar>
     </template>
 
     <template #body>

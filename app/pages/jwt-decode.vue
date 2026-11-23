@@ -51,7 +51,11 @@ watch(token, (value) => {
       <UDashboardNavbar
         title="JWT Decode"
         icon="i-lucide-key-round"
-      />
+      >
+        <template #leading>
+          <UDashboardSidebarCollapse />
+        </template>
+      </UDashboardNavbar>
     </template>
 
     <template #body>

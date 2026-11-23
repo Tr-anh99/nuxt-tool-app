@@ -53,7 +53,11 @@ watch([input, attribute, outputAttribute, mode], parse)
       <UDashboardNavbar
         title="GHTK: Tách mã đơn hàng"
         icon="i-lucide-truck"
-      />
+      >
+        <template #leading>
+          <UDashboardSidebarCollapse />
+        </template>
+      </UDashboardNavbar>
     </template>
 
     <template #body>

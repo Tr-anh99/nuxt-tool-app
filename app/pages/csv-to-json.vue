@@ -5,7 +5,8 @@ definePageMeta({
 
 useSeoMeta({
   title: 'CSV → JSON · DevTools',
-  description: 'Chuyển file CSV sang mảng JSON, tự động ép kiểu number khi có thể.'
+  description:
+    'Chuyển file CSV sang mảng JSON, tự động ép kiểu number khi có thể.'
 })
 
 const file = ref<File | null>(null)
@@ -35,7 +36,11 @@ watch(file, async (value) => {
       <UDashboardNavbar
         title="CSV → JSON"
         icon="i-lucide-file-spreadsheet"
-      />
+      >
+        <template #leading>
+          <UDashboardSidebarCollapse />
+        </template>
+      </UDashboardNavbar>
     </template>
 
     <template #body>
