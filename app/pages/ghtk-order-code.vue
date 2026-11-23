@@ -4,8 +4,9 @@ definePageMeta({
 })
 
 useSeoMeta({
-  title: 'GHTK: Tách mã đơn hàng · DevTools',
-  description: 'Tách danh sách mã vận đơn Giao Hàng Tiết Kiệm thành mã đơn hàng (chuỗi số sau dấu chấm cuối cùng).'
+  title: 'GHTK: Tách mã đơn hàng',
+  description:
+    'Tách danh sách mã vận đơn Giao Hàng Tiết Kiệm thành mã đơn hàng (chuỗi số sau dấu chấm cuối cùng).'
 })
 
 const modeItems = [
@@ -29,9 +30,10 @@ function parse() {
   }
 
   try {
-    const ids = mode.value === 'list'
-      ? extractGhtkOrderIdsFromList(input.value)
-      : extractGhtkOrderIdsFromJson(input.value, attribute.value)
+    const ids
+      = mode.value === 'list'
+        ? extractGhtkOrderIdsFromList(input.value)
+        : extractGhtkOrderIdsFromJson(input.value, attribute.value)
 
     const outKey = outputAttribute.value.trim()
     const result: unknown[] = outKey
@@ -61,7 +63,7 @@ watch([input, attribute, outputAttribute, mode], parse)
     </template>
 
     <template #body>
-      <div class="grid gap-4 lg:grid-cols-2">
+      <div class="grid h-full gap-4 lg:grid-cols-2">
         <div class="flex flex-col gap-4">
           <UFormField label="Kiểu dữ liệu đầu vào">
             <URadioGroup
@@ -94,8 +96,14 @@ watch([input, attribute, outputAttribute, mode], parse)
           </UFormField>
 
           <UFormField
-            :label="mode === 'list' ? 'Danh sách mã vận đơn GHTK' : 'JSON đầu vào (mảng object)'"
-            class="flex-1"
+            :label="
+              mode === 'list'
+                ? 'Danh sách mã vận đơn GHTK'
+                : 'JSON đầu vào (mảng object)'
+            "
+
+            class="flex min-h-0 flex-1 flex-col"
+            :ui="{ container: 'min-h-0 flex-1' }"
           >
             <template
               v-if="mode === 'list'"
@@ -105,17 +113,22 @@ watch([input, attribute, outputAttribute, mode], parse)
             </template>
             <UTextarea
               v-model="input"
-              :placeholder="mode === 'list'
-                ? 'S23100914.HNP92-K5.1356733601\nS23100914.HNP92-F95.1447309983'
-                : '[{&quot;orderCode&quot;: &quot;S23100914.HNP92-K5.1356733601&quot;}]'"
-              :rows="18"
-              class="w-full font-mono text-xs"
-              autoresize
+              :placeholder="
+                mode === 'list'
+                  ? 'S23100914.HNP92-K5.1356733601\nS23100914.HNP92-F95.1447309983'
+                  : '[{&quot;orderCode&quot;: &quot;S23100914.HNP92-K5.1356733601&quot;}]'
+              "
+              class="h-[75vh] w-full font-mono text-xs lg:h-full"
+              :ui="{ base: 'h-full min-h-48 resize-none overflow-auto' }"
             />
           </UFormField>
         </div>
 
-        <UFormField label="Mã đơn hàng">
+        <UFormField
+          label="Mã đơn hàng"
+          class="flex min-h-0 flex-col"
+          :ui="{ container: 'min-h-0 flex-1' }"
+        >
           <UAlert
             v-if="error"
             color="error"
@@ -127,7 +140,7 @@ watch([input, attribute, outputAttribute, mode], parse)
             v-else
             :code="output"
             filename="output.json"
-            class="min-h-96"
+            class="h-[75vh] lg:h-full"
           />
         </UFormField>
       </div>

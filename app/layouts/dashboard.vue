@@ -72,7 +72,7 @@ const searchGroups = computed<CommandPaletteGroup[]>(() => [
               class="size-5 text-primary"
             />
           </span>
-          <span v-if="!collapsed">DevTools</span>
+          <span v-if="!collapsed">Công cụ</span>
         </NuxtLink>
 
         <div

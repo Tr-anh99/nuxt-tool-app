@@ -6,8 +6,9 @@ definePageMeta({
 })
 
 useSeoMeta({
-  title: 'JSON → Mongo insertMany · DevTools',
-  description: 'Sinh câu lệnh db.collection.insertMany() từ mảng JSON, tuỳ chỉnh field bằng attribute hoặc template chuỗi.'
+  title: 'JSON → Mongo insertMany',
+  description:
+    'Sinh câu lệnh db.collection.insertMany() từ mảng JSON, tuỳ chỉnh field bằng attribute hoặc template chuỗi.'
 })
 
 const { copyText } = useCopyToClipboard()
@@ -21,9 +22,13 @@ const error = ref('')
 const mappingsConfig = ref('[]')
 const mappingsConfigError = ref('')
 
-watch(mappings, () => {
-  mappingsConfig.value = JSON.stringify(mappings.value, null, 2)
-}, { deep: true, immediate: true })
+watch(
+  mappings,
+  () => {
+    mappingsConfig.value = JSON.stringify(mappings.value, null, 2)
+  },
+  { deep: true, immediate: true }
+)
 
 function applyMappingsConfig() {
   mappingsConfigError.value = ''
@@ -58,7 +63,9 @@ function valuePlaceholder(mapping: MongoFieldMapping) {
   if (mapping.mode === 'template') {
     return '{{firstName}} {{lastName}}'
   }
-  return mapping.staticType === 'raw' ? 'ObjectId(), new Date(), ...' : 'Giá trị cố định'
+  return mapping.staticType === 'raw'
+    ? 'ObjectId(), new Date(), ...'
+    : 'Giá trị cố định'
 }
 
 function parse() {
@@ -70,7 +77,11 @@ function parse() {
   }
 
   try {
-    output.value = buildMongoInsertMany(input.value, collection.value, mappings.value)
+    output.value = buildMongoInsertMany(
+      input.value,
+      collection.value,
+      mappings.value
+    )
   } catch (e) {
     error.value = e instanceof Error ? e.message : String(e)
   }
@@ -93,7 +104,7 @@ watch([input, collection, mappings], parse, { deep: true })
     </template>
 
     <template #body>
-      <div class="grid gap-4 lg:grid-cols-2">
+      <div class="grid h-full gap-4 lg:grid-cols-2">
         <div class="flex flex-col gap-4">
           <UFormField label="Tên collection">
             <UInput
@@ -103,18 +114,23 @@ watch([input, collection, mappings], parse, { deep: true })
             />
           </UFormField>
 
-          <UFormField label="JSON đầu vào (mảng object)">
+          <UFormField
+            label="JSON đầu vào (mảng object)"
+            class="flex min-h-0 flex-1 flex-col"
+            :ui="{ container: 'min-h-0 flex-1' }"
+          >
             <UTextarea
               v-model="input"
               placeholder="[{&quot;name&quot;: &quot;Nguyễn Văn A&quot;, &quot;age&quot;: 25, &quot;email&quot;: &quot;a@example.com&quot;}]"
-              :rows="12"
-              class="w-full font-mono text-xs"
+              class="h-[75vh] w-full font-mono text-xs lg:h-full"
+              :ui="{ base: 'h-full min-h-48 resize-none overflow-auto' }"
             />
           </UFormField>
 
           <UFormField label="Field tuỳ chỉnh">
             <template #hint>
-              <span class="text-xs text-muted">Để trống danh sách sẽ dùng toàn bộ attribute của object đầu tiên</span>
+              <span class="text-xs text-muted">Để trống danh sách sẽ dùng toàn bộ attribute của object đầu
+                tiên</span>
             </template>
 
             <div class="flex flex-col gap-2">
@@ -218,7 +234,11 @@ watch([input, collection, mappings], parse, { deep: true })
           </UFormField>
         </div>
 
-        <UFormField label="Kết quả">
+        <UFormField
+          label="Kết quả"
+          class="flex min-h-0 flex-col"
+          :ui="{ container: 'min-h-0 flex-1' }"
+        >
           <UAlert
             v-if="error"
             color="error"
@@ -231,7 +251,7 @@ watch([input, collection, mappings], parse, { deep: true })
             :code="output"
             lang="javascript"
             filename="insertMany.js"
-            class="min-h-96"
+            class="h-[75vh] lg:h-full"
           />
         </UFormField>
       </div>

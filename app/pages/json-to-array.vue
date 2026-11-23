@@ -4,8 +4,9 @@ definePageMeta({
 })
 
 useSeoMeta({
-  title: 'JSON → Array · DevTools',
-  description: 'Trích giá trị của một hoặc nhiều attribute từ mảng object JSON thành mảng mới.'
+  title: 'JSON → Array',
+  description:
+    'Trích giá trị của một hoặc nhiều attribute từ mảng object JSON thành mảng mới.'
 })
 
 const input = ref('')
@@ -25,7 +26,10 @@ function parse() {
 
   try {
     output.value = JSON.stringify(
-      jsonToArray(input.value, attribute.value, { sort: sort.value, distinct: distinct.value }),
+      jsonToArray(input.value, attribute.value, {
+        sort: sort.value,
+        distinct: distinct.value
+      }),
       null,
       2
     )
@@ -51,7 +55,7 @@ watch([input, attribute, sort, distinct], parse)
     </template>
 
     <template #body>
-      <div class="grid gap-4 lg:grid-cols-2">
+      <div class="grid gap-4 lg:grid-cols-2 h-full">
         <div class="flex flex-col gap-4">
           <UFormField label="Tên attribute">
             <template #hint>
@@ -77,19 +81,23 @@ watch([input, attribute, sort, distinct], parse)
 
           <UFormField
             label="JSON đầu vào (mảng object)"
-            class="flex-1"
+            class="flex min-h-0 flex-1 flex-col"
+            :ui="{ container: 'min-h-0 flex-1' }"
           >
             <UTextarea
               v-model="input"
               placeholder="[{&quot;id&quot;: 1, &quot;name&quot;: &quot;Táo&quot;}, {&quot;id&quot;: 2, &quot;name&quot;: &quot;Cam&quot;}]"
-              :rows="18"
-              class="w-full font-mono text-xs"
-              autoresize
+              class="h-[75vh] w-full font-mono text-xs lg:h-full"
+              :ui="{ base: 'h-full min-h-48 resize-none overflow-auto' }"
             />
           </UFormField>
         </div>
 
-        <UFormField label="Kết quả">
+        <UFormField
+          label="Kết quả"
+          class="flex min-h-0 flex-col"
+          :ui="{ container: 'min-h-0 flex-1' }"
+        >
           <UAlert
             v-if="error"
             color="error"
@@ -101,7 +109,7 @@ watch([input, attribute, sort, distinct], parse)
             v-else
             :code="output"
             filename="output.json"
-            class="min-h-96"
+            class="h-[75vh] lg:h-full"
           />
         </UFormField>
       </div>

@@ -4,7 +4,7 @@ definePageMeta({
 })
 
 useSeoMeta({
-  title: 'CSV → JSON · DevTools',
+  title: 'CSV → JSON',
   description:
     'Chuyển file CSV sang mảng JSON, tự động ép kiểu number khi có thể.'
 })
@@ -44,7 +44,7 @@ watch(file, async (value) => {
     </template>
 
     <template #body>
-      <div class="grid gap-4 lg:grid-cols-2">
+      <div class="grid h-full gap-4 lg:grid-cols-2">
         <UFormField label="File CSV">
           <UFileUpload
             v-model="file"
@@ -56,7 +56,11 @@ watch(file, async (value) => {
           />
         </UFormField>
 
-        <UFormField label="JSON">
+        <UFormField
+          label="JSON"
+          class="flex min-h-0 flex-col"
+          :ui="{ container: 'min-h-0 flex-1' }"
+        >
           <UAlert
             v-if="error"
             color="error"
@@ -68,7 +72,7 @@ watch(file, async (value) => {
             v-else
             :code="output"
             filename="output.json"
-            class="min-h-96"
+            class="h-[75vh] lg:h-full"
           />
         </UFormField>
       </div>

@@ -20,10 +20,10 @@ watch(() => [props.code, props.lang] as const, async ([code, lang]) => {
 </script>
 
 <template>
-  <div class="w-full overflow-hidden rounded-md border border-default bg-elevated">
+  <div class="flex w-full flex-col overflow-hidden rounded-md border border-default bg-elevated">
     <div
       v-if="filename"
-      class="flex items-center justify-between border-b border-default px-3 py-1.5"
+      class="flex shrink-0 items-center justify-between border-b border-default px-3 py-1.5"
     >
       <span class="font-mono text-xs text-muted">{{ filename }}</span>
       <UButton
@@ -36,7 +36,7 @@ watch(() => [props.code, props.lang] as const, async ([code, lang]) => {
       />
     </div>
     <div
-      class="overflow-auto p-3 text-xs [&_pre]:bg-transparent! [&_pre]:p-0 [&_pre]:font-mono"
+      class="min-h-0 flex-1 overflow-auto p-3 text-xs [&_pre]:bg-transparent! [&_pre]:p-0 [&_pre]:font-mono"
       v-html="html"
     />
   </div>

@@ -6,8 +6,9 @@ definePageMeta({
 })
 
 useSeoMeta({
-  title: 'JSON → SQL Insert · DevTools',
-  description: 'Sinh câu lệnh INSERT INTO nhiều dòng từ mảng JSON, tuỳ chỉnh field bằng attribute hoặc template chuỗi.'
+  title: 'JSON → SQL Insert',
+  description:
+    'Sinh câu lệnh INSERT INTO nhiều dòng từ mảng JSON, tuỳ chỉnh field bằng attribute hoặc template chuỗi.'
 })
 
 const { copyText } = useCopyToClipboard()
@@ -22,9 +23,13 @@ const error = ref('')
 const mappingsConfig = ref('[]')
 const mappingsConfigError = ref('')
 
-watch(mappings, () => {
-  mappingsConfig.value = JSON.stringify(mappings.value, null, 2)
-}, { deep: true, immediate: true })
+watch(
+  mappings,
+  () => {
+    mappingsConfig.value = JSON.stringify(mappings.value, null, 2)
+  },
+  { deep: true, immediate: true }
+)
 
 function applyMappingsConfig() {
   mappingsConfigError.value = ''
@@ -59,7 +64,9 @@ function valuePlaceholder(mapping: SqlFieldMapping) {
   if (mapping.mode === 'template') {
     return '{{firstName}} {{lastName}}'
   }
-  return mapping.staticType === 'raw' ? 'NOW(), UUID(), ...' : 'Giá trị cố định'
+  return mapping.staticType === 'raw'
+    ? 'NOW(), UUID(), ...'
+    : 'Giá trị cố định'
 }
 
 function parse() {
@@ -71,7 +78,12 @@ function parse() {
   }
 
   try {
-    output.value = buildSqlInsertMany(input.value, table.value, mappings.value, { batchSize: batchSize.value })
+    output.value = buildSqlInsertMany(
+      input.value,
+      table.value,
+      mappings.value,
+      { batchSize: batchSize.value }
+    )
   } catch (e) {
     error.value = e instanceof Error ? e.message : String(e)
   }
@@ -94,7 +106,7 @@ watch([input, table, mappings, batchSize], parse, { deep: true })
     </template>
 
     <template #body>
-      <div class="grid gap-4 lg:grid-cols-2">
+      <div class="grid h-full gap-4 lg:grid-cols-2">
         <div class="flex flex-col gap-4">
           <UFormField label="Tên bảng">
             <UInput
@@ -106,7 +118,8 @@ watch([input, table, mappings, batchSize], parse, { deep: true })
 
           <UFormField label="Kích thước batch (số record/lệnh)">
             <template #hint>
-              <span class="text-xs text-muted">Để trống hoặc 0 = không chia batch (tất cả records trong 1 lệnh)</span>
+              <span class="text-xs text-muted">Để trống hoặc 0 = không chia batch (tất cả records trong 1
+                lệnh)</span>
             </template>
             <UInput
               v-model.number="batchSize"
@@ -117,18 +130,23 @@ watch([input, table, mappings, batchSize], parse, { deep: true })
             />
           </UFormField>
 
-          <UFormField label="JSON đầu vào (mảng object)">
+          <UFormField
+            label="JSON đầu vào (mảng object)"
+            class="flex min-h-0 flex-1 flex-col"
+            :ui="{ container: 'min-h-0 flex-1' }"
+          >
             <UTextarea
               v-model="input"
               placeholder="[{&quot;pkg_order&quot;: 1822506402, &quot;field_id&quot;: 48, &quot;value&quot;: &quot;2026-08-08 00:00:00&quot;}]"
-              :rows="12"
-              class="w-full font-mono text-xs"
+              class="h-[75vh] w-full font-mono text-xs lg:h-full"
+              :ui="{ base: 'h-full min-h-48 resize-none overflow-auto' }"
             />
           </UFormField>
 
           <UFormField label="Field tuỳ chỉnh">
             <template #hint>
-              <span class="text-xs text-muted">Để trống danh sách sẽ dùng toàn bộ attribute của object đầu tiên</span>
+              <span class="text-xs text-muted">Để trống danh sách sẽ dùng toàn bộ attribute của object đầu
+                tiên</span>
             </template>
 
             <div class="flex flex-col gap-2">
@@ -232,7 +250,11 @@ watch([input, table, mappings, batchSize], parse, { deep: true })
           </UFormField>
         </div>
 
-        <UFormField label="Kết quả">
+        <UFormField
+          label="Kết quả"
+          class="flex min-h-0 flex-col"
+          :ui="{ container: 'min-h-0 flex-1' }"
+        >
           <UAlert
             v-if="error"
             color="error"
@@ -245,7 +267,7 @@ watch([input, table, mappings, batchSize], parse, { deep: true })
             :code="output"
             lang="sql"
             filename="insert.sql"
-            class="min-h-96"
+            class="h-[75vh] lg:h-full"
           />
         </UFormField>
       </div>

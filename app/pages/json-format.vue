@@ -4,7 +4,7 @@ definePageMeta({
 })
 
 useSeoMeta({
-  title: 'JSON Format · DevTools',
+  title: 'JSON Format',
   description: 'Format lại chuỗi JSON cho dễ đọc và kiểm tra cú pháp.'
 })
 
@@ -43,18 +43,25 @@ watch(input, (value) => {
     </template>
 
     <template #body>
-      <div class="grid gap-4 lg:grid-cols-2">
-        <UFormField label="JSON string">
+      <div class="grid h-full gap-4 lg:grid-cols-2">
+        <UFormField
+          label="JSON string"
+          class="flex min-h-0 flex-1 flex-col"
+          :ui="{ container: 'min-h-0 flex-1' }"
+        >
           <UTextarea
             v-model="input"
             placeholder="{&quot;key&quot;: &quot;value&quot;}"
-            :rows="18"
-            class="w-full font-mono text-xs"
-            autoresize
+            class="h-[75vh] w-full font-mono text-xs lg:h-full"
+            :ui="{ base: 'h-full min-h-48 resize-none overflow-auto' }"
           />
         </UFormField>
 
-        <UFormField label="Formatted">
+        <UFormField
+          label="Formatted"
+          class="flex min-h-0 flex-col"
+          :ui="{ container: 'min-h-0 flex-1' }"
+        >
           <UAlert
             v-if="error"
             color="error"
@@ -66,7 +73,7 @@ watch(input, (value) => {
             v-else
             :code="output"
             filename="output.json"
-            class="min-h-96"
+            class="h-[75vh] lg:h-full"
           />
         </UFormField>
       </div>

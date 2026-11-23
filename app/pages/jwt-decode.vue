@@ -4,7 +4,7 @@ definePageMeta({
 })
 
 useSeoMeta({
-  title: 'JWT Decode · DevTools',
+  title: 'JWT Decode',
   description: 'Giải mã header và payload của một JSON Web Token.'
 })
 
@@ -32,13 +32,21 @@ watch(token, (value) => {
   }
 
   try {
-    headerJson.value = JSON.stringify(decodeJwtSegment(segments.header), null, 2)
+    headerJson.value = JSON.stringify(
+      decodeJwtSegment(segments.header),
+      null,
+      2
+    )
   } catch (e) {
     headerJson.value = `Lỗi header: ${e instanceof Error ? e.message : String(e)}`
   }
 
   try {
-    payloadJson.value = JSON.stringify(decodeJwtSegment(segments.payload), null, 2)
+    payloadJson.value = JSON.stringify(
+      decodeJwtSegment(segments.payload),
+      null,
+      2
+    )
   } catch (e) {
     payloadJson.value = `Lỗi payload: ${e instanceof Error ? e.message : String(e)}`
   }
@@ -59,17 +67,18 @@ watch(token, (value) => {
     </template>
 
     <template #body>
-      <div class="grid gap-4 lg:grid-cols-2">
+      <div class="grid h-full gap-4 lg:grid-cols-2">
         <UFormField
           label="JWT token"
-          class="flex flex-col"
+
+          class="flex min-h-0 flex-1 flex-col"
+          :ui="{ container: 'min-h-0 flex-1' }"
         >
           <UTextarea
             v-model="token"
             placeholder="eyJhbGciOiJIUzI1NiIs..."
-            :rows="14"
-            class="w-full font-mono text-xs"
-            autoresize
+            class="h-[75vh] w-full font-mono text-xs lg:h-full"
+            :ui="{ base: 'h-full min-h-48 resize-none overflow-auto' }"
           />
         </UFormField>
 
